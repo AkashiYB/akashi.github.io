@@ -1,0 +1,152 @@
+body {
+  background: #666;
+  margin: 0;
+  font-family: "Lucida Calligraphy", cursive, serif, sans-serif;
+}
+nav {
+  width: 100%;
+  height: 50px;
+  text-align: center;
+  line-height: 50px;
+  color: #fff;
+  background: #221818;
+  font-size: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.banner {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  background-size: cover;
+  overflow: hidden;
+}
+.banner img {
+  top: 0;
+  left: 0;
+  position: absolute;
+  width: 100%;
+  opacity: 0.7;
+}
+.banner H1 {
+  color: #fff;
+  position: absolute;
+  font-size: 60px;
+  font-family: "Lucida Calligraphy";
+  margin: auto;
+  bottom: 100px;
+  left: 50px;
+}
+.banner H2 {
+  color: #fff;
+  position: absolute;
+  font-size: 30px;
+  margin: auto;
+  bottom: 50px;
+  left: 50px;
+}
+.my_introduce {
+  color: #fff;
+  width: 100%;
+  height: 500px;
+  background: #222421;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+.myHead {
+  width: 35vw;
+  object-fit: contain;
+}
+.intron_con {
+  position: relative;
+  margin-left: 5vw;
+  width: 35vw;
+}
+.bg {
+  top: -80px;
+  opacity: 0.2;
+  position: absolute;
+  color: #f3f3f3;
+  font-size: 160px;
+}
+.my_work {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  background: #2e2b2a;
+  min-height: 500px;
+}
+.work_title {
+  position: relative;
+  width: 250px;
+  height: 180px;
+  color: #fff;
+  margin-top: 30px;
+  text-align: center;
+  line-height: 160px;
+  border: #808080 3px solid;
+}
+.work_title .bg {
+  top: 0;
+}
+.work_list {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 80vw;
+  margin: 50px;
+}
+.work_list > a {
+  margin: 10px;
+  width: 250px;
+  height: 200px;
+  color: #fff;
+  text-decoration: none;
+  text-align: center;
+  font-size: 30px;
+  line-height: 200px;
+  background: #666;
+  display: block;
+  
+}
+.work_list>a:hover{
+  animation: workR 2s ease-in-out;
+}
+@keyframes workR{
+  0%{
+    transform: rotate3d(0, 0, 0, 180deg);
+  }
+  50%{
+    transform: rotate3d(0, 1, 0, 180deg);
+  }
+  100%{
+    transform: rotate3d(0, 0, 0, 180deg);
+  }
+}
+/* 滚动条 */
+body::-webkit-scrollbar {
+  border-radius: 10px;
+  width: 5px;
+  background-color: #fff;
+}
+
+/*滚动条*/
+
+body::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #666;
+}
+
+/*滚动条外层轨道*/
+
+body::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 1px;
+  background-color: #222421;
+  border-radius: 10px;
+}
+

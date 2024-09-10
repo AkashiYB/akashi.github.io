@@ -1,19 +1,78 @@
-<!--首先要有一个文本类型声明，DOCTYPE这是对当前HTML版本进行说明
-    html这是默认版本为html5
--->
 <!DOCTYPE html>
-<!--这是用来写整个网页-->
-<html>
-    <!--head头信息-->
-    <head>
-        <!--设置网页标题-->
-        <title>网页标题</title>
-        <!--字符设置，其中meta为元信息，charset为属性，"utf-8"为属性值-->
-        <meta charset="utf-8"/>
-    </head>
-    <!--body这是网页内容-->
-    <body>
-        这里是写网页的显示内容可以加各种的文本标签
-    </body>
- 
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <link rel="shortcut icon" href="img/logo.PNG">
+  <title>主页</title>
+</head>
+
+<body>
+  <!-- banner -->
+  <div id="myIndex">
+    <nav>ABOUT ME</nav>
+    <div class="banner">
+      <img src="img/banner.jpg" alt="">
+      <h1>PERSONAL HOMEPAGE</h1>
+      <h2>尽人事，待天命</h2>
+    </div>
+    <!-- 自我介绍 -->
+    <div class="my_introduce">
+      <img class="myHead" src="img/head.jpg" alt="">
+      <div class="intron_con">
+        <div class="bg">01</div>
+        <h1><span style="color:#b43c39;">01</span><span>我的简介</span></h1>
+        <P>姓名：徐心一</P>
+        <p>学号：209010321</p>
+        <p>班级：数字媒体技术-交互二班</p>
+        <p>企鹅：1684856626</p>
+      </div>
+    </div>
+    <!-- 我的作业 -->
+    <div class="my_work">
+      <div class="work_title">
+        <div class="bg">02</div>
+        <h1><span style="color:#b43c39;">02</span><span>我的作业</span></h1>
+      </div>
+      <div class="work_list">
+        <template v-for="(item,index) in works">
+          <a :href="item.url" target="_blank">{{item.name}}</a>
+        </template>
+      </div>
+    </div>
+
+
+    
+  
+  
+  
+  
+  </div>
+</body>
+<script>
+  const { createApp } = Vue
+
+  createApp({
+    data() {
+      return {
+        works: [
+          { url: "http://akashi-moon-white.gitee.io/my-project/work1/work1", name: "1.红岩导航", },
+          { url: "http://akashi-moon-white.gitee.io/my-project/work2/index", name: "2.小米商城", },
+          { url: "http://akashi-moon-white.gitee.io/my-project/work/vueAC", name: "3.广告页面", },
+          { url: "http://akashi-moon-white.gitee.io/my-project/work3/index", name: "4.小米购物车", },
+          { url: "http://akashi-moon-white.gitee.io/my-project/work4/index", name: "5.小米登录", },
+          { url: "http://akashi-moon-white.gitee.io/my-project/work5/index", name: "6.组件通信", },
+          { url: "http://akashi-moon-white.gitee.io/my-project/work6/index", name: "6.任务列表", },
+          { url: "http://akashi-moon-white.gitee.io/my-project/work7/index", name: "7.登录动画", },
+          { url: "https://akashi-moon-white.gitee.io/vite", name: "8.小型网站", },
+        ]
+      }
+    }
+  }).mount('#myIndex')
+</script>
+
 </html>

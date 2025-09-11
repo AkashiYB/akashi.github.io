@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大大鲨是狗.com</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            text-align: center;
+            max-width: 800px;
+            width: 100%;
+        }
+        
+        .gif-container {
+            margin: 30px 0;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+        }
+        
+        .gif-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            border: 5px solid #ff8a65;
+        }
+        
+        .title {
+            font-size: 3.5rem;
+            color: #ff5722;
+            margin-bottom: 10px;
+            text-shadow: 3px 3px 0px rgba(255, 138, 101, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 2rem;
+            color: #795548;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            font-size: 1.5rem;
+            color: #5d4037;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 15px 30px;
+            border-radius: 50px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* 小狗爪印装饰 */
+        .paw {
+            position: absolute;
+            font-size: 100px;
+            opacity: 0.2;
+            color: #ff5722;
+            z-index: -1;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.5rem;
+            }
+            
+            .footer {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 动态生成小狗爪印背景 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const body = document.body;
+            const paws = '🐾';
+            const pawCount = 30;
+            
+            for (let i = 0; i < pawCount; i++) {
+                const paw = document.createElement('div');
+                paw.className = 'paw';
+                paw.textContent = paws;
+                paw.style.left = Math.random() * 100 + 'vw';
+                paw.style.top = Math.random() * 100 + 'vh';
+                paw.style.transform = `rotate(${Math.random() * 360}deg)`;
+                body.appendChild(paw);
+            }
+        });
+    </script>
+    
+    <div class="container">
+        <h1 class="title">大大鲨是狗.com</h1>
+        
+        <div class="gif-container">
+            <!-- 这里放置GIF图片 -->
+            <img src="./img/92e3c5671d54b0f5bd9c31f6ab1f8bb1.gif" alt="大大鲨动态图">
+        </div>
+        
+        <p class="subtitle">我是大狗狗</p>
+        
+       <a href="https://vr.justeasy.cn/view/175a7583509l7r80-1757583570.html"  target="_blank"> <div class="footer">
+            大大鲨是狗.com
+        </div></a>
+    </div>
+</body>
+</html>

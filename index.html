@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>打地鼠·粉蓝小狗 | 打击特效</title>
+    <title>打地狗 | 大大鲨是狼之争</title>
     <style>
         * {
             user-select: none;
@@ -12,7 +12,7 @@
 
         body {
             /* 蓝粉梦幻背景 */
-            background: linear-gradient(145deg, #1e2a6e 0%, #b95c8f 100%);
+            background: linear-gradient(145deg, #ffffff 0%, #b95c8f 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -347,9 +347,9 @@
 
         <button class="btn-restart" @click="resetGame">✨ 新的一局 ✨</button>
         <div class="message-area">
-            💥 快打小狗头！ 达到 {{ targetScore }} 分胜利，否则失败...
+            💥 快打大大鲨狗头！ 达到 {{ targetScore }} 分胜利，否则失败...
         </div>
-        <footer>🐶 击中特效 +1分 | 更快节奏 | 粉蓝梦境</footer>
+        <footer>🐶 </footer>
     </div>
 
     <!-- 自定义居中弹窗 (模态框) -->
@@ -507,7 +507,7 @@
                 if (isVictory) {
                     modalIcon.value = '🏆🐕';
                     modalTitle.value = '胜利！';
-                    modalMessage.value = '🎉 汪汪胜利！拯救小狗成功！ 🎉';
+                    modalMessage.value = '🎉 汪汪胜利！大大鲨是狗！ 🎉';
                 } else {
                     modalIcon.value = '💀🐺';
                     modalTitle.value = '游戏失败';

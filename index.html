@@ -2,1237 +2,708 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>林的主页</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>打地鼠·粉蓝小狗 | 打击特效</title>
     <style>
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        :root {
-            --primary-blue: #3498db;
-            --dark-blue: #2980b9;
-            --teal: #69d2ff;
-            --dark-teal: #16a085;
-            --light-teal: #d1f2eb;
-            --dark-gray: #284570;
-            --light-gray: #ecf0f1;
-            --white: #ffffff;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background: linear-gradient(135deg, #0c8fff, #17bf90);;
-            color: var(--light-gray);
-            line-height: 1.6;
-            overflow-x: hidden;
+            /* 蓝粉梦幻背景 */
+            background: linear-gradient(145deg, #1e2a6e 0%, #b95c8f 100%);
             min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', 'Quicksand', system-ui, -apple-system, 'Poppins', cursive;
+            margin: 0;
+            padding: 20px;
         }
 
-        #app {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 20px;
-            position: relative;
+        /* 游戏主面板 - 蓝粉渐变 + 星光 */
+        .game-container {
+            background: #ffecf7;
+            background-image: radial-gradient(circle at 10% 30%, rgba(180, 140, 255, 0.2) 2%, transparent 2.5%),
+                              radial-gradient(circle at 85% 70%, rgba(255, 140, 200, 0.25) 1.8%, transparent 2%);
+            background-size: 35px 35px, 40px 40px;
+            border-radius: 80px 80px 60px 60px;
+            box-shadow: 0 25px 35px rgba(0,0,0,0.3), inset 0 1px 4px rgba(255,220,240,0.9);
+            padding: 25px 30px 35px;
+            transition: all 0.2s ease;
         }
 
-        /* 三角形背景 */
-        .triangle-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-            opacity: 0.3;
-        }
-
-        .triangle {
-            position: absolute;
-            opacity: 0.4;
-            animation: float 15s infinite linear;
-        }
-
-        /* 导航栏 */
-        header {
+        /* 计分板 - 粉蓝主题 */
+        .stats {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            padding: 25px 0;
-            position: relative;
-            z-index: 10;
-            animation: slideDown 0.8s ease-out;
+            background: #3a2c68;
+            background: linear-gradient(120deg, #4a3b7c, #2a1e54);
+            padding: 12px 28px;
+            border-radius: 100px;
+            margin-bottom: 30px;
+            color: #ffe0f5;
+            text-shadow: 2px 2px 0 #2a1a4a;
+            box-shadow: inset 0 1px 4px rgba(0,0,0,0.3), 0 6px 0 #1f1540;
         }
-
-        .logo {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--white);
-            display: flex;
-            align-items: center;
-        }
-
-        .logo i {
-            margin-right: 10px;
-            color: var(--teal);
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-
-        nav ul li {
-            margin-left: 30px;
-        }
-
-        nav ul li a {
-            text-decoration: none;
-            color: var(--light-gray);
-            font-weight: 600;
-            padding: 8px 15px;
-            border-radius: 20px;
-            transition: all 0.3s ease;
-            position: relative;
-            display: inline-block;
-        }
-
-        nav ul li a:hover, 
-        nav ul li a.active {
-            color: var(--white);
-            background: var(--primary-blue);
-        }
-
-        nav ul li a:after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 50%;
-            width: 0;
-            height: 3px;
-            background: var(--teal);
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
-        }
-
-        nav ul li a:hover:after,
-        nav ul li a.active:after {
-            width: 70%;
-        }
-
-        .mobile-menu {
-            display: none;
-            font-size: 1.8rem;
-            cursor: pointer;
-            color: var(--light-gray);
-        }
-
-        /* 主要内容 */
-        main {
-            margin-top: 50px;
-        }
-
-        /* 英雄区域 */
-        .hero {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 50px;
-            align-items: center;
-            padding: 80px 0;
-        }
-
-        .hero-content {
-            animation: fadeInLeft 1s ease-out;
-        }
-
-        .hero-content h1 {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            color: var(--white);
-            line-height: 1.2;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
-
-        .hero-content h1 span {
-            color: var(--teal);
-        }
-
-        .hero-content h2 {
-            font-size: 1.8rem;
-            color: var(--light-gray);
-            margin-bottom: 25px;
-            font-weight: 500;
-        }
-
-        .hero-content p {
-            font-size: 1.1rem;
-            margin-bottom: 35px;
-            line-height: 1.8;
-            color: var(--light-gray);
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 20px;
-        }
-
-        .btn {
-            padding: 14px 32px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: inline-block;
+        .score-box, .timer-box, .target-box {
+            background: #281f50;
+            padding: 5px 20px;
+            border-radius: 2rem;
+            font-weight: bold;
             text-align: center;
+            backdrop-filter: blur(2px);
+            box-shadow: inset 0 0 4px #9988dd, 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .score-box span, .timer-box span, .target-box span {
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            display: block;
+            color: #ffcaf0;
+        }
+        .score-box .value, .timer-box .value, .target-box .value {
+            font-size: 2.2rem;
+            font-weight: 800;
+            line-height: 1;
+            color: #fff2fc;
+            text-shadow: 0 2px 0 #5a3e9e;
+        }
+        .target-box .value {
+            font-size: 1.8rem;
+        }
+
+        /* 网格 (洞穴) 蓝粉暗色调 */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px 22px;
+            justify-items: center;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 10px;
+        }
+
+        /* 洞穴样式 - 粉紫神秘感 */
+        .hole {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            max-width: 110px;
+            background: radial-gradient(circle at 30% 25%, #735e9e, #2c1f52);
+            border-radius: 50%;
+            box-shadow: inset 0 10px 8px rgba(0,0,0,0.5), 0 8px 5px rgba(0,0,0,0.3), 0 0 0 6px #c58fbf;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            font-size: 1rem;
-            border: none;
-            outline: none;
+            transition: all 0.1s linear;
             position: relative;
-            overflow: hidden;
-            z-index: 1;
+        }
+        .hole:active {
+            transform: scale(0.96);
         }
 
-        .btn:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.3);
-            transition: all 0.4s ease;
-            z-index: -1;
-        }
-
-        .btn:hover:before {
-            left: 100%;
-        }
-
-        .btn-primary {
-            background: var(--primary-blue);
-            color: var(--white);
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.6);
-        }
-
-        .btn-outline {
-            background: transparent;
-            color: var(--teal);
-            border: 2px solid var(--teal);
-        }
-
-        .btn-outline:hover {
-            background: rgba(26, 188, 156, 0.1);
-            transform: translateY(-5px);
-        }
-
-        .hero-image {
-            position: relative;
-            animation: fadeInRight 1s ease-out;
-        }
-
-        .profile-container {
-            position: relative;
-            width: 100%;
-            height: 450px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .triangle-frame {
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            background: var(--primary-blue);
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            animation: rotate 20s infinite linear;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .inner-triangle {
-            width: 350px;
-            height: 350px;
-            background: var(--dark-blue);
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .profile-image {
-            width: 300px;
-            height: 300px;
-            background: linear-gradient(45deg, var(--primary-blue), var(--dark-blue));
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--white);
-            font-size: 5rem;
-        }
-
-        .floating-triangle {
-            position: absolute;
-            width: 80px;
-            height: 80px;
-            background: var(--teal);
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-            animation: float 8s infinite ease-in-out;
-            opacity: 0.7;
-        }
-
-        .triangle-1 {
-            top: 10%;
-            left: 10%;
-            animation-delay: 0s;
-        }
-
-        .triangle-2 {
-            top: 10%;
-            right: 10%;
-            animation-delay: 1s;
-        }
-
-        .triangle-3 {
-            bottom: 10%;
-            left: 15%;
-            animation-delay: 2s;
-        }
-
-        .triangle-4 {
-            bottom: 15%;
-            right: 10%;
-            animation-delay: 3s;
-        }
-
-        /* 关于区域 */
-        .about {
-            background: rgba(44, 62, 80, 0.7);
-            border-radius: 30px;
-            padding: 70px 50px;
-            margin: 100px 0;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(10px);
-        }
-
-        .about:before {
-            content: '';
-            position: absolute;
-            top: -100px;
-            right: -100px;
-            width: 300px;
-            height: 300px;
-            background: var(--primary-blue);
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-            opacity: 0.1;
-            animation: rotate 40s infinite linear;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .section-header h2 {
-            font-size: 2.5rem;
-            color: var(--white);
-            position: relative;
-            display: inline-block;
-            margin-bottom: 15px;
-        }
-
-        .section-header h2:after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background: var(--teal);
-            border-radius: 2px;
-        }
-
-        .section-header p {
-            color: var(--light-gray);
-            max-width: 700px;
-            margin: 0 auto;
-            font-size: 1.1rem;
-        }
-
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 50px;
-        }
-
-        .about-text p {
-            margin-bottom: 25px;
-            line-height: 1.8;
-            font-size: 1.1rem;
-        }
-
-        .skills {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 25px;
-        }
-
-        .skill-card {
-            background: rgba(52, 152, 219, 0.2);
-            border-radius: 15px;
-            padding: 25px;
-            transition: all 0.4s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .skill-card:hover {
-            transform: translateY(-10px);
-            background: rgba(26, 188, 156, 0.2);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        .skill-card i {
-            font-size: 2.5rem;
-            color: var(--teal);
-            margin-bottom: 15px;
-        }
-
-        .skill-card h3 {
-            font-size: 1.4rem;
-            margin-bottom: 10px;
-            color: var(--white);
-        }
-
-        .skill-card p {
-            color: var(--light-gray);
-        }
-
-        /* 项目展示 - 视频部分 */
-        .projects {
-            margin: 100px 0;
-        }
-
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
-        }
-
-        .project-card {
-            background: rgba(44, 62, 80, 0.7);
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            transition: all 0.4s ease;
-            position: relative;
-            animation: fadeInUp 0.8s ease-out;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            cursor: pointer;
-        }
-
-        .project-card:hover {
-            transform: translateY(-15px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
-        }
-
-        .project-image {
-            height: 220px;
-            background: linear-gradient(45deg, var(--primary-blue), var(--dark-blue));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .project-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .project-card:hover .project-image img {
-            transform: scale(1.1);
-        }
-
-        .play-icon {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 70px;
-            height: 70px;
-            background: rgba(26, 188, 156, 0.8);
+        /* 地鼠 (小狗图标) 正常态 */
+        .mole {
+            background: radial-gradient(circle at 35% 30%, #ffb3e6, #e86fae);
+            width: 85%;
+            height: 85%;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 2rem;
-            opacity: 0.9;
-            transition: all 0.3s ease;
+            font-size: 3.2rem;
+            font-weight: bold;
+            box-shadow: 0 6px 0 #a13e72, inset 0 2px 10px rgba(255,225,250,0.9);
+            transition: 0.05s linear;
+            animation: popUp 0.12s cubic-bezier(0.34, 1.2, 0.8, 1);
+            cursor: pointer;
         }
-
-        .project-card:hover .play-icon {
-            background: var(--teal);
-            transform: translate(-50%, -50%) scale(1.1);
+        
+        /* 打击特效：放大+闪白+轻微旋转，快速消失 */
+        .mole-hit {
+            animation: hitEffect 0.18s cubic-bezier(0.2, 1.3, 0.6, 1) forwards !important;
         }
-
-        .project-content {
-            padding: 25px;
+        
+        @keyframes hitEffect {
+            0% {
+                transform: scale(1);
+                filter: brightness(1);
+                background: radial-gradient(circle at 35% 30%, #ffb3e6, #e86fae);
+            }
+            40% {
+                transform: scale(1.28);
+                filter: brightness(1.5);
+                background: radial-gradient(circle at 35% 30%, #fff0c0, #ff99cc);
+                box-shadow: 0 0 12px #ffddff;
+            }
+            100% {
+                transform: scale(0.9);
+                filter: brightness(0.9);
+                opacity: 0;
+            }
         }
-
-        .project-content h3 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-            color: var(--white);
-        }
-
-        .project-content p {
-            color: var(--light-gray);
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-
-        .project-tags {
+        
+        /* 空穴显示洞内暗紫色 */
+        .empty-hole {
+            width: 80%;
+            height: 80%;
+            background: #382b5a;
+            border-radius: 50%;
+            box-shadow: inset 0 4px 6px rgba(0,0,0,0.6);
             display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            opacity: 0.85;
+            color: #ad88c2;
         }
 
-        .project-tags span {
-            background: #284570;
-            color: var(--teal);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
+        @keyframes popUp {
+            0% {
+                transform: scale(0.2) translateY(30px);
+                opacity: 0;
+            }
+            80% {
+                transform: scale(1.1) translateY(-3px);
+            }
+            100% {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
         }
 
-        /* 视频模态框 */
-        .video-modal {
+        /* 按钮 - 粉嫩风格 */
+        .btn-restart {
+            background: #ff9acb;
+            border: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+            padding: 12px 30px;
+            border-radius: 40px;
+            width: 80%;
+            margin: 0 auto;
+            display: block;
+            color: #341f42;
+            font-family: inherit;
+            cursor: pointer;
+            box-shadow: 0 7px 0 #b45f8a;
+            transition: 0.07s linear;
+            letter-spacing: 2px;
+        }
+        .btn-restart:active {
+            transform: translateY(3px);
+            box-shadow: 0 4px 0 #b45f8a;
+        }
+        .btn-restart:hover {
+            background: #ffb3dc;
+        }
+
+        .message-area {
+            text-align: center;
+            margin-top: 15px;
+            font-weight: bold;
+            color: #fae2ff;
+            text-shadow: 1px 1px 0 #643e86;
+            font-size: 0.9rem;
+        }
+        footer {
+            font-size: 0.7rem;
+            text-align: center;
+            margin-top: 18px;
+            color: #ffe0f0;
+        }
+
+        /* ---------- 自定义居中弹窗 (模态框) ---------- */
+        .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.9);
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
+            animation: fadeIn 0.2s ease;
         }
-
-        .video-modal.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .modal-content {
-            width: 80%;
-            max-width: 900px;
-            position: relative;
-        }
-
-        .video-container {
-            position: relative;
-            padding-bottom: 56.25%; /* 16:9 宽高比 */
-            height: 0;
-            overflow: hidden;
-        }
-
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        .close-modal {
-            position: absolute;
-            top: -40px;
-            right: 0;
-            color: white;
-            font-size: 2.5rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .close-modal:hover {
-            color: var(--teal);
-            transform: rotate(90deg);
-        }
-
-        .video-info {
-            background: rgba(44, 62, 80, 0.9);
-            padding: 20px;
-            border-radius: 0 0 10px 10px;
-        }
-
-        .video-info h3 {
-            color: var(--white);
-            margin-bottom: 10px;
-            font-size: 1.8rem;
-        }
-
-        .video-info p {
-            color: var(--light-gray);
-            line-height: 1.6;
-        }
-
-        /* 联系区域 */
-        .contact {
-            background: rgba(44, 62, 80, 0.7);
-            border-radius: 30px;
-            padding: 70px 50px;
-            margin: 100px 0;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(10px);
-        }
-
-        .contact:before {
-            content: '';
-            position: absolute;
-            bottom: -100px;
-            left: -100px;
-            width: 300px;
-            height: 300px;
-            background: var(--teal);
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-            opacity: 0.1;
-            animation: rotate 40s infinite linear reverse;
-        }
-
-        .contact-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 50px;
-        }
-
-        .contact-info {
-            padding-right: 30px;
-        }
-
-        .contact-info h3 {
-            font-size: 1.8rem;
-            color: var(--white);
-            margin-bottom: 25px;
-        }
-
-        .contact-info p {
-            margin-bottom: 35px;
-            line-height: 1.8;
-            font-size: 1.1rem;
-            color: var(--light-gray);
-        }
-
-        .contact-details {
-            margin-bottom: 40px;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-
-        .contact-item i {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: rgba(52, 152, 219, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            color: var(--white);
-            margin-right: 20px;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 15px;
-        }
-
-        .social-links a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: rgba(52, 152, 219, 0.3);
-            color: var(--white);
-            font-size: 1.4rem;
-            transition: all 0.3s ease;
-        }
-
-        .social-links a:hover {
-            background: var(--teal);
-            transform: translateY(-5px);
-        }
-
-        .contact-form .form-group {
-            margin-bottom: 25px;
-        }
-
-        .contact-form input,
-        .contact-form textarea {
-            width: 100%;
-            padding: 15px 20px;
-            border-radius: 15px;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            background: rgba(44, 62, 80, 0.5);
-            color: var(--white);
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            font-family: inherit;
-        }
-
-        .contact-form input::placeholder,
-        .contact-form textarea::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .contact-form input:focus,
-        .contact-form textarea:focus {
-            outline: none;
-            border-color: var(--teal);
-            background: rgba(44, 62, 80, 0.7);
-        }
-
-        .contact-form textarea {
-            min-height: 150px;
-            resize: vertical;
-        }
-
-        .submit-btn {
-            background: var(--primary-blue);
-            color: var(--white);
-            padding: 15px 40px;
-            border: none;
-            border-radius: 30px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
-            width: 100%;
-        }
-
-        .submit-btn:hover {
-            background: var(--dark-blue);
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.6);
-        }
-
-        /* 页脚 */
-        footer {
+        .modal-card {
+            background: linear-gradient(145deg, #fff0fb, #ffe6f7);
+            border-radius: 48px;
+            width: 280px;
+            max-width: 80%;
+            padding: 24px 20px 32px;
             text-align: center;
-            padding: 50px 0 30px;
+            box-shadow: 0 25px 40px rgba(0, 0, 0, 0.4), inset 0 1px 2px rgba(255,255,200,0.8);
+            border: 2px solid #ffb3e0;
+            animation: slideUp 0.25s cubic-bezier(0.21, 1.11, 0.35, 1);
         }
-
-        .footer-logo {
-            font-size: 2.2rem;
-            font-weight: 700;
-            color: var(--white);
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .modal-icon {
+            font-size: 4rem;
+            margin-bottom: 12px;
         }
-
-        .footer-logo i {
-            color: var(--teal);
-            margin-right: 10px;
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin: 8px 0 12px;
+            color: #ac4e7c;
+            text-shadow: 1px 1px 0 #ffccee;
         }
-
-        .copyright {
-            color: var(--light-gray);
-            margin-top: 20px;
-            font-size: 1rem;
+        .modal-message {
+            font-size: 1.2rem;
+            background: #fff0f5;
+            padding: 12px;
+            border-radius: 60px;
+            margin: 15px 0 20px;
+            color: #531e3a;
+            font-weight: bold;
+            box-shadow: inset 0 1px 4px #ffbfdf, 0 2px 5px rgba(0,0,0,0.05);
         }
-		.linkClick{
-			text-decoration: none;
-		}
-
-        /* 动画定义 */
+        .modal-btn {
+            background: #ff8fc7;
+            border: none;
+            font-size: 1.3rem;
+            font-weight: bold;
+            padding: 10px 24px;
+            border-radius: 40px;
+            color: #2f1d3a;
+            cursor: pointer;
+            font-family: inherit;
+            box-shadow: 0 5px 0 #b15583;
+            transition: 0.05s linear;
+            width: 80%;
+        }
+        .modal-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #b15583;
+        }
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideUp {
+            from { transform: translateY(40px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
+        @media (max-width: 550px) {
+            .game-container {
+                padding: 15px 20px 25px;
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+            .stats {
+                padding: 8px 15px;
             }
-        }
-
-        @keyframes fadeInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes fadeInRight {
-            from {
-                opacity: 0;
-                transform: translateX(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes slideDown {
-            from {
-                transform: translateY(-100px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateY(0px) rotate(0deg);
-            }
-            50% {
-                transform: translateY(-20px) rotate(10deg);
-            }
-            100% {
-                transform: translateY(0px) rotate(0deg);
-            }
-        }
-
-        @keyframes rotate {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        /* 响应式设计 */
-        @media (max-width: 992px) {
-            .hero {
-                grid-template-columns: 1fr;
-            }
-            
-            .about-content,
-            .contact-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .hero-content {
-                order: 2;
-                text-align: center;
-            }
-            
-            .hero-image {
-                order: 1;
-            }
-            
-            .hero-buttons {
-                justify-content: center;
-            }
-        }
-
-        @media (max-width: 768px) {
-            nav ul {
-                display: none;
-            }
-            
-            .mobile-menu {
-                display: block;
-            }
-            
-            .hero-content h1 {
-                font-size: 2.5rem;
-            }
-            
-            .hero-content h2 {
+            .score-box .value, .timer-box .value {
                 font-size: 1.5rem;
             }
-            
-            .triangle-frame {
-                width: 300px;
-                height: 300px;
+            .mole {
+                font-size: 2.3rem;
             }
-            
-            .inner-triangle {
-                width: 250px;
-                height: 250px;
+            .empty-hole {
+                font-size: 1.5rem;
             }
-            
-            .profile-image {
-                width: 220px;
-                height: 220px;
-                font-size: 3.5rem;
+            .grid {
+                gap: 12px;
             }
-            
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .modal-content {
-                width: 95%;
+            .modal-card {
+                width: 260px;
+                padding: 20px 16px 28px;
             }
         }
     </style>
 </head>
 <body>
-    <div id="app">
-        <!-- 三角形背景 -->
-        <div class="triangle-bg" id="triangles"></div>
-        
-        <!-- 导航栏 -->
-        <header>
-            <div class="logo">
-                <!-- <i class="fas fa-play-circle"></i> -->
-               【宅急送】
+<div id="app">
+    <div class="game-container">
+        <!-- 状态栏 -->
+        <div class="stats">
+            <div class="score-box">
+                <span>🐕 得分</span>
+                <div class="value">{{ score }}</div>
             </div>
-            <nav>
-                <ul>
-                    <li><a href="#hero" class="active">首页</a></li>
-                    <li><a href="#about">关于</a></li>
-                    <li><a href="#projects">音鉴</a></li>
-                    <li><a href="#contact">联系</a></li>
-                </ul>
-            </nav>
-            <div class="mobile-menu">
-                <i class="fas fa-bars"></i>
+            <div class="target-box">
+                <span>🎯 目标</span>
+                <div class="value">{{ targetScore }}</div>
             </div>
-        </header>
-        
-        <!-- 主要内容 -->
-        <main>
-            <!-- 英雄区域 -->
-            <section id="hero" class="hero">
-                <div class="hero-content">
-                    <h1>about me<span>（林）</span></h1>
-                    <h2>宅急送 🌸 配送中</h2>
-                    <p>髑護は破片に落ちてョほてりの中のほこりになった</p>
-                    <div class="hero-buttons">
-                        <a href="#projects" class="btn btn-primary">展示</a>
-                        <a href="#contact" class="btn btn-outline">联系</a>
-                    </div>
+            <div class="timer-box">
+                <span>⏱️ 剩余</span>
+                <div class="value">{{ timeLeft }}</div>
+            </div>
+        </div>
+
+        <!-- 打地鼠网格 3x3 小狗出没！速度加快版 + 打击特效 -->
+        <div class="grid">
+            <div v-for="(hole, idx) in holes" :key="idx" class="hole" @click="hitMole(idx, $event)">
+                <div v-if="hole.active" class="mole">
+                    🐕
                 </div>
-                <div class="hero-image">
-                    <div class="profile-container">
-                        <div class="triangle-frame">
-                            <div class="inner-triangle">
-                                <div class="profile-image">
-                                    <!-- <i class="fas fa-play"></i> -->
-									<img src="./img/lin_img.jpg" alt="" style="position: absolute;right: 50px;top: 50px;width: 130%;"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="floating-triangle triangle-1"></div>
-                        <div class="floating-triangle triangle-2"></div>
-                        <div class="floating-triangle triangle-3"></div>
-                        <div class="floating-triangle triangle-4"></div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- 关于区域 -->
-            <section id="about" class="about">
-                <div class="section-header">
-                    <h2>关于我</h2>
-					<p>女/infj/处女座/23</p>
-					<p>【虚恋】【树 洞】【纯连】【纯文】</p>
-                    <p>基本无雷，单删请随意，点单欢迎随时找我，24h在线。【未完待续】</p>
-                </div>
-                <div class="about-content">
-                    <div class="about-text">
-                        <p>(1)先付后陪:不支持赊账/后付</p>
-                        <p>(2)8 :00一24:00</p>
-                        <p>(3)不在请打vx电话</p>
-						<p>任何单子先付后陪,有任何问题都可以联条我请不要伪性别下单</p>
-                    </div>
-                    <div class="skills">
-						<a class='linkClick' href="./wenxu.html" target='_blank'>
-                        <div class="skill-card">
-                            <!-- <i class="fas fa-video"></i> -->
-                            <h3>林の兵：温栩</h3>
-                            <p>在线时间:8 :00一24:00</p>
-							<!-- 点击查看详情> -->
-                        </div></a>
-						<a class='linkClick' href="./xuyan.html" target='_blank'>
-                        <div class="skill-card">
-                            <!-- <i class="fas fa-code"></i> -->
-                            <h3 >林の兵：许砚</h3>
-                            <p>在线时间:8 :00一24:00</p>
-							<!-- 点击查看详情> -->
-                        </div></a>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- 项目展示 - 视频部分 -->
-            <section id="projects" class="projects">
-                <div class="section-header">
-                    <h2>林の兵展示</h2>
-                </div>
-                <div class="projects-grid">
-					<!-- 1 -->
-                    <div class="project-card" onclick="openVideo('./img/wenxu.mp4')">
-                        <div class="project-image">
-                            <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="">
-                            <div class="play-icon">
-                                <i class="fas fa-play"></i>
-                            </div>
-                        </div>
-                        <div class="project-content">
-                            <h3>温栩</h3>
-                            <p>带耳钉的左耳隐隐作痛,不知道是耳钉太近还是左耳靠近刺痛的心脏。</p>
-                            <div class="project-tags">
-                                <span>T</span>
-                                <span>INTJ</span>
-                                <span>中性音</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- 2 -->
-                    <div class="project-card" onclick="openVideo('./img/6.24nvgui.mp4')">
-                        <div class="project-image">
-                            <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="科技产品宣传片">
-                            <div class="play-icon">
-                                <i class="fas fa-play"></i>
-                            </div>
-                        </div>
-                        <div class="project-content">
-                            <h3>许砚</h3>
-                            <p>我只想和你说话，我从没在雪中站那么久，好冷。</p>
-                            <div class="project-tags">
-                                <span>T</span>
-                                <span>ESFP</span>
-                                <span>温御音</span>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- 3 -->
-                    <div class="project-card" onclick="openVideo('https://www.youtube.com/embed/dQw4w9WgXcQ', '城市延时摄影', '通过延时摄影技术展示城市24小时的动态变化，捕捉城市生活的节奏与美感。')">
-                        <div class="project-image">
-                            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="城市延时摄影">
-                            <div class="play-icon">
-                                <i class="fas fa-play"></i>
-                            </div>
-                        </div>
-                        <div class="project-content">
-                            <h3>林</h3>
-                            <p>拥抱我，直到我和你拥有同样的香气</p>
-                            <div class="project-tags">
-                                <span>T</span>
-                                <span>INFJ</span>
-                                <span>少女音</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            <!-- 视频模态框 -->
-            <div class="video-modal" id="videoModal">
-                <div class="modal-content">
-                    <span class="close-modal" onclick="closeVideo()">
-                        <i class="fas fa-times"></i>
-                    </span>
-                    <div class="video-container">
-                        <iframe id="videoFrame" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </div>
-                    <div class="video-info">
-                        <h3 id="videoTitle"></h3>
-                        <p id="videoDescription"></p>
-                    </div>
+                <div v-else class="empty-hole">
+                    🕳️
                 </div>
             </div>
-            
-            <!-- 联系区域 -->
-            <section id="contact" class="contact">
-                <div class="section-header">
-                    <h2>联系我</h2>
-					<p>微信：ly8012III_</p>
-					<p>QQ：3164697891</p>
-					<p>微博：Coinisuuu_</p>
-                    <p>如果您有点单想法或问题咨询，请随时联系我。</p>
-                </div>
-              
-            </section>
-        </main>
-        
-        <!-- 页脚 -->
-        <footer>
-            <div class="footer-logo">
-                <!-- <i class="fas fa-play-circle"></i> VideoFolio -->
-            </div>
-            <div class="copyright">
-                © 2025 许砚. 保留所有权利
-            </div>
-        </footer>
+        </div>
+
+        <button class="btn-restart" @click="resetGame">✨ 新的一局 ✨</button>
+        <div class="message-area">
+            💥 快打小狗头！ 达到 {{ targetScore }} 分胜利，否则失败...
+        </div>
+        <footer>🐶 击中特效 +1分 | 更快节奏 | 粉蓝梦境</footer>
     </div>
 
-    <script>
-        // 创建三角形背景
-        function createTriangles() {
-            const container = document.getElementById('triangles');
-            const count = 25;
+    <!-- 自定义居中弹窗 (模态框) -->
+    <div v-if="modalVisible" class="modal-overlay" @click.self="closeModal">
+        <div class="modal-card">
+            <div class="modal-icon">{{ modalIcon }}</div>
+            <div class="modal-title">{{ modalTitle }}</div>
+            <div class="modal-message">{{ modalMessage }}</div>
+            <button class="modal-btn" @click="closeModal">继续挑战</button>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@3.3.4/dist/vue.global.js"></script>
+<script>
+    const { createApp, ref, onMounted, onUnmounted } = Vue;
+
+    createApp({
+        setup() {
+            // ---------- 游戏配置 (更快版本: 频率提升 + 停留缩短 + 目标30分) ----------
+            const INIT_TIME = 30;               // 30秒倒计时
+            const TARGET_SCORE = 30;            // 目标30分胜利
+            const MAX_ACTIVE_MOLES = 3;          // 最多同时出现3只小狗
+            const GENERATE_INTERVAL_MS = 520;    // 每0.52秒尝试生成一只
+            const MOLE_VISIBLE_TIME = 450;       // 每只小狗仅停留0.45秒
+
+            // 响应式数据
+            const gameActive = ref(true);
+            const score = ref(0);
+            const timeLeft = ref(INIT_TIME);
+            const targetScore = ref(TARGET_SCORE);
             
-            for (let i = 0; i < count; i++) {
-                const triangle = document.createElement('div');
-                triangle.classList.add('triangle');
-                
-                // 随机位置和大小
-                const size = Math.random() * 100 + 30;
-                const posX = Math.random() * 100;
-                const posY = Math.random() * 100;
-                const delay = Math.random() * 15;
-                const duration = Math.random() * 20 + 10;
-                const rotation = Math.random() * 360;
-                
-                triangle.style.width = `${size}px`;
-                triangle.style.height = `${size}px`;
-                triangle.style.left = `${posX}%`;
-                triangle.style.top = `${posY}%`;
-                triangle.style.transform = `rotate(${rotation}deg)`;
-                triangle.style.animationDelay = `${delay}s`;
-                triangle.style.animationDuration = `${duration}s`;
-                triangle.style.backgroundColor = i % 2 === 0 ? '#3498db' : '#1abc9c';
-                triangle.style.clipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
-                
-                container.appendChild(triangle);
-            }
-        }
-        
-        // 视频播放功能
-        function openVideo(videoUrl, title, description) {
-            const modal = document.getElementById('videoModal');
-            const videoFrame = document.getElementById('videoFrame');
-            const videoTitle = document.getElementById('videoTitle');
-            const videoDescription = document.getElementById('videoDescription');
+            // 弹窗相关
+            const modalVisible = ref(false);
+            const modalIcon = ref('');
+            const modalTitle = ref('');
+            const modalMessage = ref('');
             
-            videoFrame.src = videoUrl;
-            videoTitle.textContent = title;
-            videoDescription.textContent = description;
+            // 3x3 洞的数据
+            const holes = ref([]);
             
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-        
-        function closeVideo() {
-            const modal = document.getElementById('videoModal');
-            const videoFrame = document.getElementById('videoFrame');
+            // 定时器ID
+            let generateInterval = null;
+            let countdownInterval = null;
+            let moleTimeouts = [];
             
-            modal.classList.remove('active');
-            videoFrame.src = '';
-            document.body.style.overflow = 'auto';
-        }
-        
-        // 关闭模态框当点击背景
-        document.getElementById('videoModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeVideo();
-            }
-        });
-        
-        // 滚动动画
-        function animateOnScroll() {
-            const elements = document.querySelectorAll('.skill-card, .project-card');
-            
-            elements.forEach(element => {
-                const elementTop = element.getBoundingClientRect().top;
-                const windowHeight = window.innerHeight;
-                
-                if (elementTop < windowHeight - 100) {
-                    element.style.animation = 'fadeInUp 0.8s ease-out forwards';
+            // 辅助: 初始化洞状态
+            function initHoles() {
+                const newHoles = [];
+                for (let i = 0; i < 9; i++) {
+                    newHoles.push({ active: false });
                 }
-            });
-        }
-        
-        // 初始化
-        document.addEventListener('DOMContentLoaded', () => {
-            createTriangles();
+                holes.value = newHoles;
+            }
             
-            // 初始检查和滚动监听
-            animateOnScroll();
-            window.addEventListener('scroll', animateOnScroll);
-            
-            // 导航链接点击事件
-            document.querySelectorAll('nav a').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    // 移除所有active类
-                    document.querySelectorAll('nav a').forEach(a => {
-                        a.classList.remove('active');
+            // 清除所有洞的消失计时器
+            function clearAllMoleTimeouts() {
+                if (moleTimeouts.length) {
+                    moleTimeouts.forEach(timeoutId => {
+                        if (timeoutId) clearTimeout(timeoutId);
                     });
-                    
-                    // 添加active类到当前链接
-                    this.classList.add('active');
-                    
-                    // 滚动到目标区域
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth'
-                        });
+                    moleTimeouts = [];
+                }
+            }
+            
+            // 清除所有游戏主定时器
+            function clearGameIntervals() {
+                if (generateInterval) {
+                    clearInterval(generateInterval);
+                    generateInterval = null;
+                }
+                if (countdownInterval) {
+                    clearInterval(countdownInterval);
+                    countdownInterval = null;
+                }
+            }
+            
+            // 重置某一个洞的消失计时器
+            function clearMoleTimeoutForIndex(index) {
+                if (moleTimeouts[index]) {
+                    clearTimeout(moleTimeouts[index]);
+                    moleTimeouts[index] = null;
+                }
+            }
+            
+            // 让指定洞的地鼠消失 (不清除分数)
+            function deactivateMole(index, skipTimerClear = false) {
+                if (!holes.value[index]) return;
+                if (holes.value[index].active === true) {
+                    holes.value[index].active = false;
+                    if (!skipTimerClear) {
+                        clearMoleTimeoutForIndex(index);
                     }
+                }
+            }
+            
+            // 生成一只新地鼠
+            function tryGenerateMole() {
+                if (!gameActive.value) return;
+                
+                const activeCount = holes.value.filter(hole => hole.active === true).length;
+                if (activeCount >= MAX_ACTIVE_MOLES) return;
+                
+                const inactiveIndices = [];
+                holes.value.forEach((hole, idx) => {
+                    if (!hole.active) inactiveIndices.push(idx);
                 });
+                if (inactiveIndices.length === 0) return;
+                
+                const randomIndex = inactiveIndices[Math.floor(Math.random() * inactiveIndices.length)];
+                holes.value[randomIndex].active = true;
+                
+                clearMoleTimeoutForIndex(randomIndex);
+                
+                const timeoutId = setTimeout(() => {
+                    if (holes.value[randomIndex] && holes.value[randomIndex].active === true) {
+                        holes.value[randomIndex].active = false;
+                    }
+                    if (moleTimeouts[randomIndex] === timeoutId) {
+                        moleTimeouts[randomIndex] = null;
+                    }
+                }, MOLE_VISIBLE_TIME);
+                
+                moleTimeouts[randomIndex] = timeoutId;
+            }
+            
+            // 开始生成地鼠
+            function startGeneratingMoles() {
+                if (generateInterval) clearInterval(generateInterval);
+                generateInterval = setInterval(() => {
+                    tryGenerateMole();
+                }, GENERATE_INTERVAL_MS);
+            }
+            
+            // 倒计时
+            function startCountdown() {
+                if (countdownInterval) clearInterval(countdownInterval);
+                countdownInterval = setInterval(() => {
+                    if (!gameActive.value) return;
+                    if (timeLeft.value > 0) {
+                        timeLeft.value--;
+                        if (timeLeft.value === 0) {
+                            if (score.value >= targetScore.value) {
+                                if (gameActive.value) endGame(true);
+                            } else {
+                                if (gameActive.value) endGame(false);
+                            }
+                        }
+                    }
+                }, 1000);
+            }
+            
+            // 显示自定义弹窗 (替代alert)
+            function showModal(isVictory) {
+                if (isVictory) {
+                    modalIcon.value = '🏆🐕';
+                    modalTitle.value = '胜利！';
+                    modalMessage.value = '🎉 汪汪胜利！拯救小狗成功！ 🎉';
+                } else {
+                    modalIcon.value = '💀🐺';
+                    modalTitle.value = '游戏失败';
+                    modalMessage.value = '大大鲨是狼';   // 失败时显示指定文案
+                }
+                modalVisible.value = true;
+            }
+            
+            // 关闭弹窗
+            function closeModal() {
+                modalVisible.value = false;
+            }
+            
+            // 结束游戏
+            function endGame(isVictory) {
+                if (!gameActive.value) return;
+                gameActive.value = false;
+                
+                clearGameIntervals();
+                clearAllMoleTimeouts();
+                // 将所有地鼠变为非活跃
+                for (let i = 0; i < holes.value.length; i++) {
+                    if (holes.value[i].active) {
+                        holes.value[i].active = false;
+                    }
+                }
+                
+                showModal(isVictory);
+            }
+            
+            // ----- 打击特效核心函数 -----
+            // 为被击中的小狗添加动画特效，并延迟后清除class (不影响状态消失)
+            function playHitAnimation(event, holeIndex) {
+                // 通过事件找到具体的 .mole 元素
+                const targetEl = event.currentTarget; // 当前点击的 .hole 元素
+                if (!targetEl) return;
+                const moleDiv = targetEl.querySelector('.mole');
+                if (moleDiv) {
+                    // 移除之前的动画class (如果残留)
+                    moleDiv.classList.remove('mole-hit');
+                    // 强制重绘小技巧: 直接添加动画
+                    void moleDiv.offsetWidth; // 强制同步样式
+                    moleDiv.classList.add('mole-hit');
+                    // 动画结束后移除class，但注意动画很短，不影响消失逻辑
+                    setTimeout(() => {
+                        if (moleDiv) moleDiv.classList.remove('mole-hit');
+                    }, 200);
+                }
+            }
+            
+            // 点击打地鼠 (带交互特效)
+            function hitMole(index, event) {
+                if (!gameActive.value) return;
+                const hole = holes.value[index];
+                if (hole && hole.active) {
+                    // 1. 播放打击特效 (视觉反馈)
+                    playHitAnimation(event, index);
+                    
+                    // 2. 增加分数
+                    score.value++;
+                    
+                    // 3. 让小狗消失 (注意：消失操作不能过于提前导致动画中断，但动画很快，同时调用没问题)
+                    // 为了更平滑，让消失稍微延迟一帧？但用户期待立即加分且小狗消失，特效已经触发。
+                    // 但直接deactivateMole会让小狗从DOM消失，动画就看不见了。需要延迟一点点执行消失，让动画播放完再消失。
+                    // 但为了避免玩家连续点击同一个洞，我们可以延迟80ms消失，同时禁止短时间内再次点击同一只狗（设置一个锁定标志）
+                    // 更优雅：先临时禁用该洞的再次点击标记，并延迟消失。但为了特效完整，让消失延迟执行，并且保留加分已经完成。
+                    // 且要防止消失期间再次点击同一个洞，我们可以在延迟期间忽略再次命中。
+                    // 由于我们已设置游戏active判定，并且分数增加一次后，该洞active还是true，如果不立即消失，玩家会重复点击同一只狗刷分！
+                    // 所以必须立刻让该洞的active变为false，但同时为了特效，我们可以保持视觉上动画但数据已消失，这样玩家无法再次得分。
+                    // 但视觉上如果数据消失了，.mole会立刻变成.empty-hole，动画看不到了。解决方案：不立刻改变active，而是克隆/覆盖？
+                    // 更靠谱方案：给该洞增加一个“正在击中”临时状态，延迟0.15秒再正式改变active。但这样可能导致连续点击得分bug。
+                    // 为了保证公平，还是先立即设置为false避免重复得分，同时因为动画很短，可以隐藏真实小狗，但视觉上保留特效元素？这比较复杂。
+                    // 换一种方式：利用CSS动画在元素消失前完成，我们立即设置active=false导致v-if移除，但动画也会移除。因此我们不要让active立即变false。
+                    // 因此采用延迟方案：先让小狗的DOM加动画，同时临时禁用该洞的点击（用标记），延迟一小段时间（0.12s）后再设置active=false。这样可以保证动画完整，且不会重复得分。
+                    // 设定一个lock标志防止重复点击同一洞。
+                    
+                    // 使用Map来记录临时锁定
+                    if (!window._hitLock) window._hitLock = new Set();
+                    if (window._hitLock.has(index)) return; // 已击中待消失
+                    window._hitLock.add(index);
+                    
+                    // 增加分数 (已加)
+                    // 延迟消失，让动画展示完整
+                    setTimeout(() => {
+                        if (holes.value[index] && holes.value[index].active === true) {
+                            deactivateMole(index, false);
+                        }
+                        window._hitLock.delete(index);
+                    }, 130); // 略长于动画时间，保证看到打击特效
+                    
+                    // 胜利判断 (分数已增加)
+                    if (score.value >= targetScore.value) {
+                        if (gameActive.value) {
+                            // 注意: 游戏结束前要把所有锁定清理，然后结束
+                            if (window._hitLock) window._hitLock.clear();
+                            endGame(true);
+                        }
+                    }
+                }
+            }
+            
+            // 重置游戏 (全新一局)
+            function resetGame() {
+                // 清空所有临时锁
+                if (window._hitLock) window._hitLock.clear();
+                // 关闭弹窗
+                if (modalVisible.value) {
+                    modalVisible.value = false;
+                }
+                
+                if (gameActive.value === true) {
+                    clearGameIntervals();
+                    clearAllMoleTimeouts();
+                } else {
+                    clearGameIntervals();
+                    clearAllMoleTimeouts();
+                }
+                
+                gameActive.value = true;
+                score.value = 0;
+                timeLeft.value = INIT_TIME;
+                
+                // 重置所有洞
+                for (let i = 0; i < holes.value.length; i++) {
+                    if (holes.value[i].active) {
+                        holes.value[i].active = false;
+                    }
+                    clearMoleTimeoutForIndex(i);
+                }
+                
+                initHoles();
+                startCountdown();
+                startGeneratingMoles();
+                
+                // 开局快速出现2~3只小狗
+                setTimeout(() => {
+                    if (gameActive.value) {
+                        tryGenerateMole();
+                        setTimeout(() => {
+                            if (gameActive.value) tryGenerateMole();
+                            setTimeout(() => {
+                                if (gameActive.value && holes.value.filter(h => h.active).length < MAX_ACTIVE_MOLES) {
+                                    tryGenerateMole();
+                                }
+                            }, 120);
+                        }, 100);
+                    }
+                }, 40);
+            }
+            
+            // 初始化游戏入口
+            function initGame() {
+                initHoles();
+                gameActive.value = true;
+                score.value = 0;
+                timeLeft.value = INIT_TIME;
+                startCountdown();
+                startGeneratingMoles();
+                setTimeout(() => {
+                    if (gameActive.value) {
+                        tryGenerateMole();
+                        setTimeout(() => {
+                            if (gameActive.value) tryGenerateMole();
+                            setTimeout(() => {
+                                if (gameActive.value) tryGenerateMole();
+                            }, 150);
+                        }, 80);
+                    }
+                }, 50);
+            }
+            
+            onMounted(() => {
+                initGame();
             });
             
-            // 移动菜单切换
-            document.querySelector('.mobile-menu').addEventListener('click', function() {
-                const nav = document.querySelector('nav ul');
-                nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+            onUnmounted(() => {
+                clearGameIntervals();
+                clearAllMoleTimeouts();
+                if (window._hitLock) window._hitLock.clear();
             });
-        });
-    </script>
+            
+            return {
+                holes,
+                score,
+                timeLeft,
+                targetScore,
+                hitMole,
+                resetGame,
+                modalVisible,
+                modalIcon,
+                modalTitle,
+                modalMessage,
+                closeModal,
+            };
+        }
+    }).mount('#app');
+</script>
 </body>
 </html>
